@@ -5,15 +5,22 @@ export default class Game {
     this.element = document.querySelector(str);
     this.boardSize = index ** 2;
     if (this.element === null) throw new Error('Field not found');
+    this.sucessConuter = 0;
+    this.failCounter = 0;
   }
 
   init() {
+    this.element.style = `max-width: ${Math.sqrt(this.boardSize) * 100}px; min-height: ${Math.sqrt(this.boardSize) * 100}px`
     this.createCells();
     this.insertImg();
     setInterval(() => {
       this.removeImg();
       this.insertImg();
-    }, 2000);
+      this.failCoumter += 1;
+      if (this.failCounter === 5) {
+        this.gameOver();
+      }
+    }, 1000);
   }
 
   createCells() {
@@ -37,5 +44,16 @@ export default class Game {
   removeImg() {
     this.img = document.querySelector('.game-field-cell-img');
     this.img.remove();
+  }
+
+  gameOver() {
+    alert('Game lost!');
+    this.failCounter = 0;
+    this.sucessConuter = 0;
+    this.init();
+  }
+
+  click() {
+    
   }
 }
