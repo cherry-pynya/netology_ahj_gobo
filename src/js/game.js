@@ -44,10 +44,11 @@ export default class Game {
 
   gameOver() {
     this.showCountters();
-    this.failCounter = -1;
+    this.failCounter = 0;
     this.sucessConuter = 0;
     alert('Game over!');
     this.showCountters();
+    this.gamePlay();
   }
 
   click() {
@@ -63,7 +64,7 @@ export default class Game {
   }
 
   gamePlay() {
-    setInterval(() => {
+    const id = setInterval(() => {
       if (this.clicked) {
         this.sucessConuter += 1;
         this.insertImg();
@@ -76,6 +77,7 @@ export default class Game {
       this.showCountters();
       if (this.failCounter === 5) {
         this.gameOver();
+        window.clearInterval(id);
       }
     }, 1000);
   }

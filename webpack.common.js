@@ -11,9 +11,10 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(jpg|png)$/,
-        use: {
-          loader: 'url-loader',
+        test: /\.(gif|png|jpg|jpeg|svg)?$/,
+        loader: 'file-loader',
+        options: {
+          name: 'assets/img/[name].[ext]',
         },
       },
       {
