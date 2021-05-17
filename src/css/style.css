@@ -20,3 +20,14 @@
     width: 100%;
     height: 100%;
 }
+
+.counter {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.counter-fail, .counter-success {
+    margin-right: 5px;
+}

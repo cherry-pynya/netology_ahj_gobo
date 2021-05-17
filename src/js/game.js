@@ -7,20 +7,16 @@ export default class Game {
     if (this.element === null) throw new Error('Field not found');
     this.sucessConuter = 0;
     this.failCounter = 0;
+    this.clicked = false;
   }
 
   init() {
-    this.element.style = `max-width: ${Math.sqrt(this.boardSize) * 100}px; min-height: ${Math.sqrt(this.boardSize) * 100}px`
+    this.element.style = `max-width: ${Math.sqrt(this.boardSize) * 100}px; min-height: ${Math.sqrt(this.boardSize) * 100}px`;
     this.createCells();
     this.insertImg();
-    setInterval(() => {
-      this.removeImg();
-      this.insertImg();
-      this.failCoumter += 1;
-      if (this.failCounter === 5) {
-        this.gameOver();
-      }
-    }, 1000);
+    this.showCountters();
+    this.click();
+    this.gamePlay();
   }
 
   createCells() {
@@ -47,13 +43,47 @@ export default class Game {
   }
 
   gameOver() {
-    alert('Game lost!');
-    this.failCounter = 0;
+    this.showCountters();
+    this.failCounter = -1;
     this.sucessConuter = 0;
-    this.init();
+    alert('Game over!');
+    this.showCountters();
   }
 
   click() {
-    
+    // eslint-disable-next-line consistent-return
+    this.element.addEventListener('click', (e) => {
+      const item = e.target;
+      if (item.classList.contains('game-field-cell-img')) {
+        item.remove();
+        this.clicked = true;
+      }
+      if (item.classList.contains('game-field-cell')) return false;
+    });
+  }
+
+  gamePlay() {
+    setInterval(() => {
+      if (this.clicked) {
+        this.sucessConuter += 1;
+        this.insertImg();
+        this.clicked = false;
+      } else if (!this.clicked) {
+        this.removeImg();
+        this.failCounter += 1;
+        this.insertImg();
+      }
+      this.showCountters();
+      if (this.failCounter === 5) {
+        this.gameOver();
+      }
+    }, 1000);
+  }
+
+  showCountters() {
+    const fails = document.querySelector('.counter-fail');
+    const success = document.querySelector('.counter-success');
+    fails.textContent = `Fails: ${this.failCounter}`;
+    success.textContent = `Success: ${this.sucessConuter}`;
   }
 }
